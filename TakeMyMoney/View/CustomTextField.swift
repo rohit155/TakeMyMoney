@@ -8,9 +8,11 @@
 import UIKit
 
 class CustomTextField: UITextField {
-    //    override func draw(_ rect: CGRect) {
-    //        // Drawing code
-    //    }
+    
+    override func draw(_ rect: CGRect) {
+        layer.cornerRadius = 10
+        clipsToBounds = true
+    }
     
     let padding = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     
@@ -28,6 +30,7 @@ class CustomTextField: UITextField {
 }
 
 extension UITextField {
+    
     func setInputViewDatePicker(target: Any, selector: Selector) {
         // Create a UIDatePicker object and assign to inputView
         let screenWidth = UIScreen.main.bounds.width
@@ -43,6 +46,35 @@ extension UITextField {
         let barButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector) //7
         toolBar.setItems([cancel, flexible, barButton], animated: false) //8
         self.inputAccessoryView = toolBar //9
+    }
+    
+    func endTextFieldEditing() {
+        layer.borderWidth = 0
+        layer.borderColor = nil
+        text = ""
+        endEditing(true)
+    }
+    
+    func checkForEmptyTextField() -> Bool {
+        if text != "" {
+            layer.borderWidth = 0
+            layer.borderColor = nil
+            return true
+        } else {
+            layer.borderWidth = 1
+            layer.borderColor = UIColor.red.cgColor
+            return false
+        }
+    }
+    
+    func showError() {
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.red.cgColor
+    }
+    
+    func hideError() {
+        layer.borderWidth = 0
+        layer.borderColor = nil
     }
     
     @objc func tapCancel() {
